@@ -1,0 +1,28 @@
+ .row {
+  display: flex;
+  padding: 3px 0;
+}
+
+.col {
+  flex: 50%;
+}
+
+.key {
+  font-family: monospace;
+}
+
+#warning {
+  color: firebrick;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+}
+
+#warning:not([active]) {
+  display: none;
+}
+
+#options {
+  margin: 20px 0;
+}

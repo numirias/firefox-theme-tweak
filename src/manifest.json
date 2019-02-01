@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "Theme Tweak",
+  "version": "0.1",
+  "homepage_url": "https://github.com/numirias/firefox-theme-tweak",
+  "description": "An add-on to tweak your Firefox theme",
+  "applications": {
+    "gecko": {
+      "id": "themetweak@numirias"
+    }
+  },
+  "icons": {
+    "320": "img/icon.png"
+  },
+  "permissions": [
+    "<all_urls>",
+    "storage",
+    "theme"
+  ],
+  "options_ui": {
+    "page": "options/options.html",
+    "browser_style": true
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  }
+}

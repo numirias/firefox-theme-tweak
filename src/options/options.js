@@ -1,22 +1,27 @@
 async function applyTheme() {
   let theme = {};
+  let cat;
   for (let item of document.querySelectorAll('.option-input')) {
-    if (!item.nextSibling.checked) {
+    if (!item.parentElement.querySelector('.option-active').checked) {
       continue;
     }
-    let cat = item.dataset.cat;
+    cat = item.dataset.cat;
     cat in theme || (theme[cat] = {});
     theme[cat][item.dataset.key] = item.value;
   }
   browser.theme.update(theme);
 }
 
+function warn(msg) {
+  let warningEl = document.querySelector('#warning');
+  warningEl.innerText = `\u26a0\ufe0f ${msg}`;
+  warningEl.setAttribute('active', '');
+}
+
 async function getCurrentThemeInfo() {
   let theme = await browser.theme.getCurrent();
   if (!theme.colors) {
-    let warningEl = document.querySelector('#warning');
-    warningEl.innerText = 'No current theme to tweak available. Install and enable a theme first!';
-    warningEl.setAttribute('active', '');
+    warn('The current theme cannot be tweaked. (Default themes usually can\'t be tweaked.) Install a theme from addons.mozilla.org.');
     return;
   }
   Object.entries(theme).forEach(([category, options]) => {
@@ -65,4 +70,40 @@ async function getCurrentThemeInfo() {
   });
 }
 
+async function fillThemeSelector() {
+  let all = await browser.management.getAll();
+  let addon, opt;
+  let select = document.querySelector('#theme-select');
+  for (addon of all) {
+    if (addon.type != 'theme') {
+      continue;
+    }
+    opt = document.createElement('option');
+    opt.value = addon.id;
+    opt.innerText = `${addon.name} (${addon.id})`;
+    if (addon.enabled) {
+      opt.selected = true;
+    }
+    select.appendChild(opt);
+  }
+}
+
 getCurrentThemeInfo();
+fillThemeSelector();
+
+async function resetTheme() {
+  let current = document.querySelector('#theme-select').value;
+  await browser.management.setEnabled(current, false);
+  await browser.management.setEnabled(current, true);
+  window.location.reload();
+}
+
+document.querySelector('#reset-theme').addEventListener('click', resetTheme);
+
+async function selectTheme(el) {
+  let selected = document.querySelector('#theme-select').value;
+  await browser.management.setEnabled(selected, true);
+  window.location.reload();
+}
+
+document.querySelector('#theme-select').addEventListener('change', selectTheme);

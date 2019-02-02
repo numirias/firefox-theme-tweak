@@ -1,4 +1,4 @@
- .row {
+.row {
   display: flex;
   padding: 3px 0;
 }
@@ -11,12 +11,23 @@
   font-family: monospace;
 }
 
+#description {
+  border-bottom: 1px solid #999;
+  padding-bottom: 20px;
+}
+
+#current-theme {
+  margin: 20px 0;
+}
+
+#current-theme .theme-id {
+  font-family: monospace;
+}
+
 #warning {
   color: firebrick;
-  font-weight: bold;
   width: 100%;
-  text-align: center;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 #warning:not([active]) {
@@ -25,4 +36,8 @@
 
 #options {
   margin: 20px 0;
+}
+
+#theme-select {
+  width: 100%;
 }
